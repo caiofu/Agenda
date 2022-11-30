@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace Agenda
 {
-    internal class Contato
+   public class Contato
     {
-        int id;
+        
         public string Nome { get; set; }
         public string Telefone { get; set; }
-        DateTime? dataNascimento { get; set; }
+        public string dataNascimento { get; set; }
 
 
         //METODOS CONSTRUTORES
+        /*
         public Contato(string nome, string telefone, DateTime dataNascimento)
         {
-
+            //Criar 
             this.Nome = nome;
             this.Telefone = telefone;
         }
@@ -26,12 +27,9 @@ namespace Agenda
         {
             this.Nome = nome;
             this.Telefone = telefone;
-        }
+        }*/
 
         //METODOS
-        private void CriarContato()
-        {
-
-        }
+        
     }
 }
