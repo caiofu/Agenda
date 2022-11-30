@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Text.Json;
+
 namespace Agenda
 {
     internal class Program
@@ -9,6 +9,7 @@ namespace Agenda
             //Menu ->
             Boolean menu = true;
             int escolha;
+            String caminhoArquivo = "teste3.json";
 			List<Contato> ListaContatos = new List<Contato>();
 		
 			while (menu)
@@ -33,46 +34,44 @@ namespace Agenda
                         Console.WriteLine("Data de nascimento (Opcional): ");
                         contatoAtual.dataNascimento = Console.ReadLine();
                  
+                        //PASSA PARA LISTA TODOS OS CAMPOS
                         ListaContatos.Add(contatoAtual);
 
-                        break;
+                        //Criando o arquivo json
+                        //string json = Newtonsoft.Json.JsonConvert.SerializeObject(ListaContatos);
+                        //File.WriteAllText(caminhoArquivo, json);
+                        contatoAtual.CriaArquivo(ListaContatos);
+						break;
                     
                     //LISTAR CONTATOS
                     case 2:
-                        //Verifica se ja tem algum contato salvo
-
-                        // dynamic tes = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("teste.json"));
-                        string stringJson = File.ReadAllText("teste.json");
-                        Contato testecon = JsonSerializer.Deserialize<Contato>(stringJson);
-						/*,
-                         System.Text.Json.JsonException: 'The JSON value could not be converted to Agenda.Contato. Path: $ 
-                        | LineNumber: 0 | BytePositionInLine: 1.'
-*/
-
-
-						Console.WriteLine(stringJson);
-                        
-						if (ListaContatos.Count == 0)
+                        //VERIFICA SE O ARQUIVO EXISTE
+						if (ListaContatos.Count == 0 && File.Exists(caminhoArquivo) == false)
                         {
                             Console.WriteLine("Voce ainda nao tem nenhum contato");
                         }else
                         {
-                            //Carrega a lista salva no disco
+                            //CARREGA OS CONTATOS
+							dynamic objJson = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(caminhoArquivo));
 
-                            //
-                            foreach (var contato in ListaContatos)
-                            {
-                                Console.WriteLine("Nome: {0} Telefone: {1} Data de nascimento: {2}", contato.Nome, contato.Telefone, contato.dataNascimento);
-                            }
-                        }
+
+
+							int contador = 1;
+							foreach (var item in objJson)
+							{
+								Console.WriteLine("---------------------------------------------------------------");
+								Console.WriteLine("ID: " + contador + " \nNome: " + item.Nome + "\nTelefone: " + item.Telefone + "\nData de Nascimento: " + item.dataNascimento);
+								Console.WriteLine("---------------------------------------------------------------\n");
+								contador++;
+
+							}
+						}
                        
                     break;
                     
                     //ENCERRAR 
                     case 3:
-						//Criando o arquivo json
-						string json = Newtonsoft.Json.JsonConvert.SerializeObject(ListaContatos);
-						File.WriteAllText("teste.json", json);
+						
 
 						menu = false;
                       break;

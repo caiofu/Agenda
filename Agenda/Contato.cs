@@ -31,5 +31,10 @@ namespace Agenda
 
         //METODOS
         
+        public void CriaArquivo(List<Contato> ListaContatos)
+        {
+			string json = Newtonsoft.Json.JsonConvert.SerializeObject(ListaContatos);
+			File.WriteAllText("teste3.json", json);
+		}
     }
 }
