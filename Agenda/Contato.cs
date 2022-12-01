@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,32 +10,54 @@ namespace Agenda
    public class Contato
     {
         
-        public string Nome { get; set; }
-        public string Telefone { get; set; }
+        public string nome { get; set; }
+        public string telefone { get; set; }
         public string dataNascimento { get; set; }
 
+        public static string caminhoArquivo = "agenda.json";
 
-        //METODOS CONSTRUTORES
-        /*
-        public Contato(string nome, string telefone, DateTime dataNascimento)
-        {
-            //Criar 
-            this.Nome = nome;
-            this.Telefone = telefone;
-        }
 
-        public Contato(string nome, string telefone)
+		//METODOS CONSTRUTORES
+        public Contato()
         {
-            this.Nome = nome;
-            this.Telefone = telefone;
-        }*/
+			
 
-        //METODOS
-        
-        public void CriaArquivo(List<Contato> ListaContatos)
+		}
+	
+		//METODOS
+
+		public static void CriaArquivo(List<Contato> ListaContatos)
         {
-			string json = Newtonsoft.Json.JsonConvert.SerializeObject(ListaContatos);
-			File.WriteAllText("teste3.json", json);
+			
+			string json = JsonConvert.SerializeObject(ListaContatos, Formatting.Indented); //Formatting.Indented para ficar organizado
+			File.WriteAllText(caminhoArquivo, json);
+		}
+
+        //METODO RESPONSAVEL POR CARREGAR DADOS DO ARQUIVO JSON SE ELE EXISTIR E POPULAR LISTA.
+        public List<Contato> CarregaArquivo()
+        {
+			List<Contato> ListaJson = new List<Contato>();
+			//Verifica se existe o arquivo
+			if (File.Exists(caminhoArquivo))
+			{
+                
+				//Carrega os contatos
+				dynamic objJson = JsonConvert.DeserializeObject(File.ReadAllText(caminhoArquivo));
+
+                ListaJson.Add(objJson);
+                
+			}
+
+            return ListaJson;
+		}
+
+        public void RemoveContato(dynamic objJson, int idContato)
+		{
+            //Remove o contato
+			objJson.RemoveAt(idContato);
+			//Remonta o arquivo json
+			File.WriteAllText("teste3.json", JsonConvert.SerializeObject(objJson, Formatting.Indented));
+			
 		}
     }
 }
