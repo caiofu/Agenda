@@ -1,24 +1,25 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-
+//ATENÇAO VERIFICAR MUDANÇA PARA INSERIR NO FINAL
+//https://www.newtonsoft.com/json/help/html/ModifyJson.htm
 namespace Agenda
 {
 	internal class Program
 	{
 		static void Main(string[] args)
 		{
-			//Menu ->
+			//Menu
 			Boolean menu = true;
 			int escolha;
-			// String caminhoArquivo = "teste3.json";
+
 			List<Contato> ListaContatos = new List<Contato>();
 
 			//CARREGANDO DADOS PARA LISTA DO ARQUIVO JSON
 			if (File.Exists(Contato.caminhoArquivo))
 			{
 				dynamic objJsonCarrega = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
-			
+
 				foreach (var item in objJsonCarrega)
 				{
 
@@ -83,6 +84,9 @@ namespace Agenda
 
 							//CARREGA OS CONTATOS A PARTIR DA LISTA
 							int contador = 1;
+
+							//Sugestão criar um campo no json "quantidadeTelefone" para salvar quantos numeros tem
+							//para poder usar o foreach para percorrer.
 							foreach (var item in listaOrdenada)
 							{
 								Console.WriteLine("---------------------------------------------------------------");
@@ -99,6 +103,12 @@ namespace Agenda
 							{
 								case 1:
 									Console.WriteLine("visualizando");
+
+									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento\n");
+									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone\n");
+									Console.WriteLine("5 - Adicionar um numero de telegone\n");
+									Console.ReadLine();
+
 									break;
 								case 2:
 									Console.WriteLine("Digite o id para remover\n");
@@ -114,7 +124,7 @@ namespace Agenda
 										Console.Read(); //USANDO SÓ PARA NAO LIMPAR A TELA ENQUANTO USUARIO NAO DIGITAR ALGO
 									}
 
-									
+
 									break;
 								default:
 									break;
@@ -130,13 +140,13 @@ namespace Agenda
 						menu = false;
 						break;
 
-/*
-					case 4:
-						dynamic objJsonteste = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
-						//Remove o contato
-						objJsonteste.RemoveAt(0);
-						File.WriteAllText(Contato.caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
-						break;*/
+						/*
+											case 4:
+												dynamic objJsonteste = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
+												//Remove o contato
+												objJsonteste.RemoveAt(0);
+												File.WriteAllText(Contato.caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
+												break;*/
 
 				}
 			}
