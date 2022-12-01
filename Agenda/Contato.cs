@@ -51,13 +51,15 @@ namespace Agenda
             return ListaJson;
 		}
 
-        public void RemoveContato(dynamic objJson, int idContato)
+        public static void RemoveContato( int idContato)
 		{
-            //Remove o contato
+			dynamic objJson = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
+			//Remove o contato
 			objJson.RemoveAt(idContato);
+	
 			//Remonta o arquivo json
-			File.WriteAllText("teste3.json", JsonConvert.SerializeObject(objJson, Formatting.Indented));
-			
+			File.WriteAllText(caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
+		
 		}
     }
 }

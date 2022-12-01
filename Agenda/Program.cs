@@ -4,122 +4,143 @@ using System.Collections.Generic;
 
 namespace Agenda
 {
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            //Menu ->
-            Boolean menu = true;
-            int escolha;
-           // String caminhoArquivo = "teste3.json";
+	internal class Program
+	{
+		static void Main(string[] args)
+		{
+			//Menu ->
+			Boolean menu = true;
+			int escolha;
+			// String caminhoArquivo = "teste3.json";
 			List<Contato> ListaContatos = new List<Contato>();
 
 			//CARREGANDO DADOS PARA LISTA DO ARQUIVO JSON
 			if (File.Exists(Contato.caminhoArquivo))
-            {
+			{
 				dynamic objJsonCarrega = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
-
+			
 				foreach (var item in objJsonCarrega)
 				{
-                   
+
 					Contato configuraContato = new Contato();
 					configuraContato.nome = item.nome;
 					configuraContato.telefone = item.telefone;
 					configuraContato.dataNascimento = item.dataNascimento;
 
 					ListaContatos.Add(configuraContato);
-					
+
 				}
 				Contato.CriaArquivo(ListaContatos);
 
 			}
-				
+
 
 			while (menu)
-            {
+			{
 				Console.Clear();
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
-                escolha = Int32.Parse(Console.ReadLine());
+				escolha = Int32.Parse(Console.ReadLine());
 
-                switch(escolha)
-                {
-                    //ADICIONAR NOVO CONTATO
-                    case 1:
+				switch (escolha)
+				{
+					//ADICIONAR NOVO CONTATO
+					case 1:
 						Contato contatoAtual = new Contato();
 
 						Console.WriteLine("Nome do contato:");
-                        contatoAtual.nome = Console.ReadLine();
-
-                        
-                        Console.WriteLine("Telefone: ");
-                        contatoAtual.telefone = Console.ReadLine();
+						contatoAtual.nome = Console.ReadLine();
 
 
-                        Console.WriteLine("Data de nascimento (Opcional): ");
-                        contatoAtual.dataNascimento = Console.ReadLine();
-                 
-                        //PASSA PARA LISTA O OBJETO
-                        ListaContatos.Add(contatoAtual);
+						Console.WriteLine("Telefone: ");
+						contatoAtual.telefone = Console.ReadLine();
 
-                        
-                       
-                        Contato.CriaArquivo(ListaContatos);
+
+						Console.WriteLine("Data de nascimento (Opcional): ");
+						contatoAtual.dataNascimento = Console.ReadLine();
+
+						//PASSA PARA LISTA O OBJETO
+						ListaContatos.Add(contatoAtual);
+
+
+
+						Contato.CriaArquivo(ListaContatos);
 						break;
-                    
-                    //LISTAR CONTATOS
-                    case 2:
-                        int opcaoListaContatos;
-                        //VERIFICA SE O ARQUIVO EXISTE
+
+					//LISTAR CONTATOS
+					case 2:
+						int opcaoListaContatos;
+						//VERIFICA SE O ARQUIVO EXISTE
 						if (ListaContatos.Count == 0 && File.Exists(Contato.caminhoArquivo) == false)
-                        {
-                            Console.WriteLine("Voce ainda nao tem nenhum contato");
-                            Console.ReadLine();
-                        }else
-                        {
-                            Console.Clear();
-                            //ORDENANDO A LISTA PELO NOME
-                            IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
+						{
+							Console.WriteLine("Voce ainda nao tem nenhum contato");
+							Console.ReadLine();
+						}
+						else
+						{
+							Console.Clear();
+							//ORDENANDO A LISTA PELO NOME
+							IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
 
 							//CARREGA OS CONTATOS A PARTIR DA LISTA
 							int contador = 1;
 							foreach (var item in listaOrdenada)
 							{
 								Console.WriteLine("---------------------------------------------------------------");
-								Console.WriteLine(" \nNome: " + item.nome +"\nID: " + contador );
+								Console.WriteLine(" \nNome: " + item.nome + "\nID: " + contador);
 								Console.WriteLine("---------------------------------------------------------------\n");
 								contador++;
 							}
 
-                            //
-                            Console.WriteLine("1 - Visualizar contato \n2 - Exluir contato\n3 - Voltar ao menu principal\n");
-                            Console.Write(":");
-                            opcaoListaContatos = Int32.Parse(Console.ReadLine());
-                            switch (opcaoListaContatos)
-                            {
-                                case 1:
-                                    Console.WriteLine("visualizando");
-                                    break;
-                                case 2:
+							//
+							Console.WriteLine("1 - Visualizar contato \n2 - Exluir contato\n3 - Voltar ao menu principal\n");
+							Console.Write(":");
+							opcaoListaContatos = Int32.Parse(Console.ReadLine());
+							switch (opcaoListaContatos)
+							{
+								case 1:
+									Console.WriteLine("visualizando");
+									break;
+								case 2:
+									Console.WriteLine("Digite o id para remover\n");
+									//VERIFICA SE ID EXISTE E REMOVE
+									int idEscolhido = Int32.Parse(Console.ReadLine());
+									if (idEscolhido >= 0 && idEscolhido <= contador)
+									{
+										Contato.RemoveContato(idEscolhido);
+									}
+									else
+									{
+										Console.WriteLine("ID ESCOLHIDO NAO EXISTE!");
+										Console.Read(); //USANDO SÓ PARA NAO LIMPAR A TELA ENQUANTO USUARIO NAO DIGITAR ALGO
+									}
 
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                       
-                    break;
-                    
-                    //ENCERRAR 
-                    case 3:
+									
+									break;
+								default:
+									break;
+							}
+						}
 
-					
+						break;
+
+					//ENCERRAR 
+					case 3:
+
+
 						menu = false;
-                      break;
+						break;
 
+/*
+					case 4:
+						dynamic objJsonteste = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
+						//Remove o contato
+						objJsonteste.RemoveAt(0);
+						File.WriteAllText(Contato.caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
+						break;*/
 
-                }
-            }
-            /*
+				}
+			}
+			/*
             List<Contato> ListaContatos = new List<Contato>();
             ListaContatos.Add(new Contato(Console.ReadLine(), Console.ReadLine()));
 
@@ -130,6 +151,6 @@ namespace Agenda
 
             }
             */
-        }
-    }
+		}
+	}
 }
