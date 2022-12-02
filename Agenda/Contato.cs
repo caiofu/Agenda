@@ -59,7 +59,7 @@ namespace Agenda
 	
 			//Remonta o arquivo json
 			File.WriteAllText(caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
-		
 		}
+		
     }
 }

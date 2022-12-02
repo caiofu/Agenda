@@ -1,6 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
+using Newtonsoft.Json.Linq;
 //ATENÇAO VERIFICAR MUDANÇA PARA INSERIR NO FINAL
 //https://www.newtonsoft.com/json/help/html/ModifyJson.htm
 namespace Agenda
@@ -34,11 +36,11 @@ namespace Agenda
 				Contato.CriaArquivo(ListaContatos);
 
 			}
-
+		
 
 			while (menu)
 			{
-				Console.Clear();
+				//Console.Clear();
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
 				escolha = Int32.Parse(Console.ReadLine());
 
@@ -101,15 +103,41 @@ namespace Agenda
 							opcaoListaContatos = Int32.Parse(Console.ReadLine());
 							switch (opcaoListaContatos)
 							{
+								//VISUALIZAR CONTATO
 								case 1:
-									Console.WriteLine("visualizando");
-
-									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento\n");
-									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone\n");
+									//MOSTRA DADOS
+									Console.Write("ID do contato para visualizar: ");
+									int idContato = Int32.Parse(Console.ReadLine());
+									if(idContato >0 && idContato <= ListaContatos.Count)
+									{
+										Console.WriteLine("Nome: "+ListaContatos[idContato-1].nome);
+										Console.WriteLine("Data de nascimento: " + ListaContatos[idContato-1].dataNascimento);
+									}
+									//OPÇÕES
+									int opcaoVisualizaContato;
+									Console.WriteLine("---------------------------------------------------------------");
+									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento");
+									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone");
 									Console.WriteLine("5 - Adicionar um numero de telegone\n");
-									Console.ReadLine();
+									Console.WriteLine("---------------------------------------------------------------");
+									opcaoListaContatos = Int32.Parse( Console.ReadLine());
+
+									//SWITCH PARA OPÇÕES DE EDIÇÃO
+									switch(opcaoListaContatos)
+									{
+										case 1:
+
+										break;
+										case 2:
+
+										break;
+										case 3:
+
+										break;
+									}
 
 									break;
+								//REMOVER CONTATO
 								case 2:
 									Console.WriteLine("Digite o id para remover\n");
 									//VERIFICA SE ID EXISTE E REMOVE
@@ -135,32 +163,13 @@ namespace Agenda
 
 					//ENCERRAR 
 					case 3:
-
-
 						menu = false;
 						break;
 
-						/*
-											case 4:
-												dynamic objJsonteste = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
-												//Remove o contato
-												objJsonteste.RemoveAt(0);
-												File.WriteAllText(Contato.caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
-												break;*/
 
 				}
 			}
-			/*
-            List<Contato> ListaContatos = new List<Contato>();
-            ListaContatos.Add(new Contato(Console.ReadLine(), Console.ReadLine()));
 
-            foreach (var Contato in ListaContatos)
-            {
-                Console.WriteLine("Nome: {0} Telefone: {1}", Contato.Nome, Contato.Telefone);
-                
-
-            }
-            */
 		}
 	}
 }
