@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.JavaScript;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 //ATENÇAO VERIFICAR MUDANÇA PARA INSERIR NO FINAL
 //https://www.newtonsoft.com/json/help/html/ModifyJson.htm
 namespace Agenda
@@ -13,27 +14,30 @@ namespace Agenda
 		{
 			//Menu
 			Boolean menu = true;
-			int escolha;
+			int escolha, idJson=0;
 
 			List<Contato> ListaContatos = new List<Contato>();
 
 			//CARREGANDO DADOS PARA LISTA DO ARQUIVO JSON
-			if (File.Exists(Contato.caminhoArquivo))
+			dynamic objJsonCarrega = JsonConvert.DeserializeObject(File.ReadAllText(Arquivo.caminhoArquivo));
+			
+			if (File.Exists(Arquivo.caminhoArquivo) && objJsonCarrega.Count > 0 )
 			{
-				dynamic objJsonCarrega = JsonConvert.DeserializeObject(File.ReadAllText(Contato.caminhoArquivo));
-
+				
+				
 				foreach (var item in objJsonCarrega)
 				{
 
 					Contato configuraContato = new Contato();
+					configuraContato.id= idJson;
 					configuraContato.nome = item.nome;
 					configuraContato.telefone = item.telefone;
 					configuraContato.dataNascimento = item.dataNascimento;
 
 					ListaContatos.Add(configuraContato);
-
+					idJson++;
 				}
-				Contato.CriaArquivo(ListaContatos);
+				Arquivo.CriaArquivo(ListaContatos);
 
 			}
 		
@@ -61,19 +65,22 @@ namespace Agenda
 						Console.WriteLine("Data de nascimento (Opcional): ");
 						contatoAtual.dataNascimento = Console.ReadLine();
 
+						contatoAtual.id = idJson;
+						idJson++;
+
 						//PASSA PARA LISTA O OBJETO
 						ListaContatos.Add(contatoAtual);
 
 
 
-						Contato.CriaArquivo(ListaContatos);
+						Arquivo.CriaArquivo(ListaContatos);
 						break;
 
 					//LISTAR CONTATOS
 					case 2:
 						int opcaoListaContatos;
 						//VERIFICA SE O ARQUIVO EXISTE
-						if (ListaContatos.Count == 0 && File.Exists(Contato.caminhoArquivo) == false)
+						if (objJsonCarrega.Count == 0 || File.Exists(Arquivo.caminhoArquivo) == false)
 						{
 							Console.WriteLine("Voce ainda nao tem nenhum contato");
 							Console.ReadLine();
@@ -91,6 +98,7 @@ namespace Agenda
 							//para poder usar o foreach para percorrer.
 							foreach (var item in listaOrdenada)
 							{
+								
 								Console.WriteLine("---------------------------------------------------------------");
 								Console.WriteLine(" \nNome: " + item.nome + "\nID: " + contador);
 								Console.WriteLine("---------------------------------------------------------------\n");
@@ -144,7 +152,10 @@ namespace Agenda
 									int idEscolhido = Int32.Parse(Console.ReadLine());
 									if (idEscolhido >= 0 && idEscolhido <= contador)
 									{
-										Contato.RemoveContato(idEscolhido);
+										//Remove do arquivo
+										Arquivo.RemoveContato(idEscolhido);
+										//Remove da lista
+										//ListaContatos.Remove(Contato[])
 									}
 									else
 									{
