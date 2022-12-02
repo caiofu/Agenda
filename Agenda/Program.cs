@@ -18,12 +18,17 @@ namespace Agenda
 
 			List<Contato> ListaContatos = new List<Contato>();
 
-			//CARREGANDO DADOS PARA LISTA DO ARQUIVO JSON
+			//CRIA O ARQUIVO CASO NAO EXISTA
+			if(File.Exists(Arquivo.caminhoArquivo) == false)
+			{
+				Arquivo.CriaArquivo(ListaContatos);
+			}
+
+			//CARREGANDO DADOS DO ARQUIVO JSON PARA LISTA CASO TENHA DADOS
 			dynamic objJsonCarrega = JsonConvert.DeserializeObject(File.ReadAllText(Arquivo.caminhoArquivo));
 			
 			if (File.Exists(Arquivo.caminhoArquivo) && objJsonCarrega.Count > 0 )
 			{
-				
 				
 				foreach (var item in objJsonCarrega)
 				{
@@ -37,10 +42,13 @@ namespace Agenda
 					ListaContatos.Add(configuraContato);
 					idJson++;
 				}
-				Arquivo.CriaArquivo(ListaContatos);
 
+				Arquivo.CriaArquivo(ListaContatos);
 			}
 		
+	
+			
+
 
 			while (menu)
 			{
@@ -80,7 +88,7 @@ namespace Agenda
 					case 2:
 						int opcaoListaContatos;
 						//VERIFICA SE O ARQUIVO EXISTE
-						if (objJsonCarrega.Count == 0 || File.Exists(Arquivo.caminhoArquivo) == false)
+						if (ListaContatos.Count == 0 )
 						{
 							Console.WriteLine("Voce ainda nao tem nenhum contato");
 							Console.ReadLine();
@@ -91,18 +99,15 @@ namespace Agenda
 							//ORDENANDO A LISTA PELO NOME
 							IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
 
-							//CARREGA OS CONTATOS A PARTIR DA LISTA
-							int contador = 1;
-
 							//Sugestão criar um campo no json "quantidadeTelefone" para salvar quantos numeros tem
 							//para poder usar o foreach para percorrer.
 							foreach (var item in listaOrdenada)
 							{
 								
 								Console.WriteLine("---------------------------------------------------------------");
-								Console.WriteLine(" \nNome: " + item.nome + "\nID: " + contador);
+								Console.WriteLine(" \nNome: " + item.nome + "\nID: " + item.id);
 								Console.WriteLine("---------------------------------------------------------------\n");
-								contador++;
+								
 							}
 
 							//
@@ -118,8 +123,8 @@ namespace Agenda
 									int idContato = Int32.Parse(Console.ReadLine());
 									if(idContato >0 && idContato <= ListaContatos.Count)
 									{
-										Console.WriteLine("Nome: "+ListaContatos[idContato-1].nome);
-										Console.WriteLine("Data de nascimento: " + ListaContatos[idContato-1].dataNascimento);
+										Console.WriteLine("Nome: "+ListaContatos[idContato].nome);
+										Console.WriteLine("Data de nascimento: " + ListaContatos[idContato].dataNascimento);
 									}
 									//OPÇÕES
 									int opcaoVisualizaContato;
@@ -150,12 +155,13 @@ namespace Agenda
 									Console.WriteLine("Digite o id para remover\n");
 									//VERIFICA SE ID EXISTE E REMOVE
 									int idEscolhido = Int32.Parse(Console.ReadLine());
-									if (idEscolhido >= 0 && idEscolhido <= contador)
+									if (idEscolhido >= 0 && idEscolhido <= ListaContatos.Count-1)
 									{
 										//Remove do arquivo
 										Arquivo.RemoveContato(idEscolhido);
 										//Remove da lista
-										//ListaContatos.Remove(Contato[])
+										ListaContatos.Remove(ListaContatos[0]);
+										
 									}
 									else
 									{

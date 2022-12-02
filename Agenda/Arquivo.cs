@@ -22,7 +22,9 @@ namespace Agenda
 		{
 			dynamic objJson = JsonConvert.DeserializeObject(File.ReadAllText(caminhoArquivo));
 			//Remove o contato
-			objJson.RemoveAt(idContato-1);
+			objJson.RemoveAt(idContato);
+
+			//PRECISA AINDA REMOVER DA LISTA TAMBEM
 
 			//Remonta o arquivo json
 			File.WriteAllText(caminhoArquivo, JsonConvert.SerializeObject(objJson, Formatting.Indented));
