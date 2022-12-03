@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices.JavaScript;
 using Newtonsoft.Json.Linq;
 using System.Linq;
-//ATENÇAO VERIFICAR MUDANÇA PARA INSERIR NO FINAL
+//ATENÇAO VERIFICAR MUDANÇA PARA INSERIR  TELEFONE
 //https://www.newtonsoft.com/json/help/html/ModifyJson.htm
 namespace Agenda
 {
@@ -36,9 +36,17 @@ namespace Agenda
 					Contato configuraContato = new Contato();
 					configuraContato.id= idJson;
 					configuraContato.nome = item.nome;
-					configuraContato.telefone = item.telefone;
+					//configuraContato.telefone = item.telefone;
+
+					//Loop para adicionar os telefone
+					foreach (var tel in item.telefone)
+					{
+						configuraContato.telefone.Add(tel);
+					}
+					
 					configuraContato.dataNascimento = item.dataNascimento;
 
+				
 					ListaContatos.Add(configuraContato);
 					idJson++;
 				}
@@ -67,7 +75,16 @@ namespace Agenda
 
 
 						Console.WriteLine("Telefone: ");
-						contatoAtual.telefone = Console.ReadLine();
+						//contatoAtual.telefone = Console.ReadLine();
+						string telefoneAux = Console.ReadLine();
+
+						while(telefoneAux == "" || telefoneAux.Length <9)
+						{
+							Console.WriteLine("Você tem que digitar o telefone valido!");
+							telefoneAux = Console.ReadLine();
+						}
+						contatoAtual.telefone.Add(telefoneAux);
+						
 
 
 						Console.WriteLine("Data de nascimento (Opcional): ");
