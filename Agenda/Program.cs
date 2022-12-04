@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Runtime.InteropServices.JavaScript;
 using Newtonsoft.Json.Linq;
 using System.Linq;
@@ -36,24 +37,21 @@ namespace Agenda
 					Contato configuraContato = new Contato();
 					configuraContato.id= idJson;
 					configuraContato.nome = item.nome;
-					//configuraContato.telefone = item.telefone;
+					configuraContato.dataNascimento = item.dataNascimento;
 
 					//Loop para adicionar os telefone
 					foreach (var tel in item.telefone)
 					{
-						configuraContato.telefone.Add(tel);
+						configuraContato.telefone.Add(tel.ToString());
 					}
-					
-					configuraContato.dataNascimento = item.dataNascimento;
 
-				
 					ListaContatos.Add(configuraContato);
 					idJson++;
 				}
 
 				Arquivo.CriaArquivo(ListaContatos);
 			}
-		
+			
 	
 			
 
@@ -78,27 +76,34 @@ namespace Agenda
 						//contatoAtual.telefone = Console.ReadLine();
 						string telefoneAux = Console.ReadLine();
 
+						
 						while(telefoneAux == "" || telefoneAux.Length <9)
 						{
 							Console.WriteLine("Você tem que digitar o telefone valido!");
 							telefoneAux = Console.ReadLine();
 						}
 						contatoAtual.telefone.Add(telefoneAux);
+
+
+						Console.WriteLine("Deseja salvar a data de nacimento? 1 -Sim ");
+						int dtNascEscolha = int.Parse(Console.ReadLine());
+
+						if(dtNascEscolha == 1)
+						{
+							Console.WriteLine("Data de nascimento (Opcional) - DD/MM/YYYY : ");
+							string dataDigitada = Console.ReadLine();
+							contatoAtual.InsereDataNascimento(dataDigitada);
+						}
 						
-
-
-						Console.WriteLine("Data de nascimento (Opcional): ");
-						contatoAtual.dataNascimento = Console.ReadLine();
-
+					
 						contatoAtual.id = idJson;
 						idJson++;
 
 						//PASSA PARA LISTA O OBJETO
 						ListaContatos.Add(contatoAtual);
 
-
-
 						Arquivo.CriaArquivo(ListaContatos);
+						Console.Clear();
 						break;
 
 					//LISTAR CONTATOS
@@ -122,14 +127,17 @@ namespace Agenda
 							{
 								
 								Console.WriteLine("---------------------------------------------------------------");
-								Console.WriteLine(" \nNome: " + item.nome + "\nID: " + item.id);
+								Console.WriteLine("Contato N°: " + item.id+ "\nNome: " + item.nome  );
 								Console.WriteLine("---------------------------------------------------------------\n");
 								
 							}
 
 							//
+							Console.WriteLine("###########################");
 							Console.WriteLine("1 - Visualizar contato \n2 - Exluir contato\n3 - Voltar ao menu principal\n");
+							Console.WriteLine("###########################");
 							Console.Write(":");
+
 							opcaoListaContatos = Int32.Parse(Console.ReadLine());
 							switch (opcaoListaContatos)
 							{
@@ -138,10 +146,19 @@ namespace Agenda
 									//MOSTRA DADOS
 									Console.Write("ID do contato para visualizar: ");
 									int idContato = Int32.Parse(Console.ReadLine());
-									if(idContato >0 && idContato <= ListaContatos.Count)
+									if(idContato >=0 && idContato <= ListaContatos.Count)
 									{
+										Console.Clear() ;
+										Console.WriteLine("###########################");
 										Console.WriteLine("Nome: "+ListaContatos[idContato].nome);
 										Console.WriteLine("Data de nascimento: " + ListaContatos[idContato].dataNascimento);
+										//Mostra todos telefones
+										foreach (var telefones in ListaContatos[idContato].telefone)
+										{
+											Console.WriteLine("Telefone:"+telefones);
+										}
+										Console.WriteLine("###########################");
+
 									}
 									//OPÇÕES
 									int opcaoVisualizaContato;
@@ -155,15 +172,37 @@ namespace Agenda
 									//SWITCH PARA OPÇÕES DE EDIÇÃO
 									switch(opcaoListaContatos)
 									{
+										//EDITAR NOME
 										case 1:
-
-										break;
+											Console.WriteLine("Nome atual: "+ ListaContatos[idContato].nome);
+											Console.WriteLine("Qual novo nome: ");
+											string novoNome = Console.ReadLine();
+											//if(novoNome )
+											break;
+										//EDITAR DATA DE NASCIMENTO
 										case 2:
 
-										break;
+											break;
+										//EDITAR UM NUMERO		
 										case 3:
 
-										break;
+											break;
+										//EXCLUIR UM NUMERO DE TELEFONE	
+										case 4:
+
+											break;
+										//ADICIONAR UM NUMERO DE TELEFONE		
+										case 5:
+
+											break;
+										//VOLTAR AO MENU PRINCIPAL	
+										case 6:
+
+											break;
+										default:
+											Console.WriteLine("DIGITE UMA OPCAO VALIDA!");
+											break;
+
 									}
 
 									break;
@@ -198,6 +237,13 @@ namespace Agenda
 					//ENCERRAR 
 					case 3:
 						menu = false;
+						break;
+
+						default: 
+						Console.Clear();
+						Console.WriteLine("###########################");
+						Console.WriteLine("Digite uma opção valida!");
+						Console.WriteLine("###########################\n");
 						break;
 
 

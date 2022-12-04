@@ -17,13 +17,38 @@ namespace Agenda
         public string dataNascimento { get; set; }
 
         public List<String> telefone = new List<String>();
-        //public string[] telefoneT = new string[10] ;
-
+     
 
 		//METODOS CONSTRUTORES
 		public Contato()
         {
 			
+
+		}
+
+        //METODOS
+
+		//METODO QUE VERIFICA E INSERE DATA NO FORMATO CORRETO
+        public void InsereDataNascimento(string dataDigitada)
+        {
+			
+			//VERIFICA SE DATA ESTA NO FORMATO CORRETO
+			DateTime data = new DateTime();
+			
+			bool verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+
+			while (!verificaDataDigitada)
+			{
+				Console.WriteLine("Formato invalido, digite uma data no formato dd/mm/yyyy:");
+				dataDigitada = Console.ReadLine();
+				verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+			}
+
+			this.dataNascimento = dataDigitada;
+		}
+
+		public void InsereTelefone()
+		{
 
 		}
 	
