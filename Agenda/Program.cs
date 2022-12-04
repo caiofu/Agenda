@@ -58,7 +58,7 @@ namespace Agenda
 
 			while (menu)
 			{
-				//Console.Clear();
+				Console.Clear();
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
 				escolha = Int32.Parse(Console.ReadLine());
 
@@ -72,19 +72,12 @@ namespace Agenda
 						contatoAtual.nome = Console.ReadLine();
 
 
+						//TELEFONE <----
 						Console.WriteLine("Telefone: ");
-						//contatoAtual.telefone = Console.ReadLine();
-						string telefoneAux = Console.ReadLine();
+						contatoAtual.InsereTelefone();
+				
 
-						
-						while(telefoneAux == "" || telefoneAux.Length <9)
-						{
-							Console.WriteLine("Você tem que digitar o telefone valido!");
-							telefoneAux = Console.ReadLine();
-						}
-						contatoAtual.telefone.Add(telefoneAux);
-
-
+						//DATA DE NASCIMENTO <-----
 						Console.WriteLine("Deseja salvar a data de nacimento? 1 -Sim ");
 						int dtNascEscolha = int.Parse(Console.ReadLine());
 
@@ -93,6 +86,12 @@ namespace Agenda
 							Console.WriteLine("Data de nascimento (Opcional) - DD/MM/YYYY : ");
 							string dataDigitada = Console.ReadLine();
 							contatoAtual.InsereDataNascimento(dataDigitada);
+						}
+						else
+						{
+							Console.WriteLine("Você optou por nao inserir a data de nascimento!");
+							Console.WriteLine("Pressione ENTER para continuar!");
+							Console.ReadLine();
 						}
 						
 					
@@ -112,7 +111,7 @@ namespace Agenda
 						//VERIFICA SE O ARQUIVO EXISTE
 						if (ListaContatos.Count == 0 )
 						{
-							Console.WriteLine("Voce ainda nao tem nenhum contato");
+							Console.WriteLine("Voce ainda nao tem nenhum contato \nPressione ENTER para continuar ");
 							Console.ReadLine();
 						}
 						else

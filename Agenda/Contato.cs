@@ -50,7 +50,18 @@ namespace Agenda
 		public void InsereTelefone()
 		{
 
+			Int64 telefoneDigitado;
+			bool verificaTelefone = Int64.TryParse(Console.ReadLine(), out telefoneDigitado);
+			
+			while (!verificaTelefone || telefoneDigitado.ToString().Length < 9)
+			{
+				Console.WriteLine(telefoneDigitado);
+				Console.WriteLine("Você tem que digitar o telefone valido!");
+				verificaTelefone = Int64.TryParse(Console.ReadLine(), out telefoneDigitado);
+			}
+			this.telefone.Add(telefoneDigitado.ToString());
+
 		}
-	
-    }
+
+	}
 }
