@@ -117,19 +117,7 @@ namespace Agenda
 						else
 						{
 							Console.Clear();
-							//ORDENANDO A LISTA PELO NOME
-							IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
-
-							//Sugestão criar um campo no json "quantidadeTelefone" para salvar quantos numeros tem
-							//para poder usar o foreach para percorrer.
-							foreach (var item in listaOrdenada)
-							{
-								
-								Console.WriteLine("---------------------------------------------------------------");
-								Console.WriteLine("Contato N°: " + item.id+ "\nNome: " + item.nome  );
-								Console.WriteLine("---------------------------------------------------------------\n");
-								
-							}
+							Contato.MostraContatos(ListaContatos);
 
 							//
 							Console.WriteLine("###########################");
@@ -150,7 +138,16 @@ namespace Agenda
 										Console.Clear() ;
 										Console.WriteLine("###########################");
 										Console.WriteLine("Nome: "+ListaContatos[idContato].nome);
-										Console.WriteLine("Data de nascimento: " + ListaContatos[idContato].dataNascimento);
+
+										if (ListaContatos[idContato].dataNascimento != null)
+										{
+											Console.WriteLine("Data de nascimento: " + ListaContatos[idContato].dataNascimento);
+										}
+										else
+										{
+											Console.WriteLine("Data de nascimento: Não informada!");
+										}
+										
 										//Mostra todos telefones
 										foreach (var telefones in ListaContatos[idContato].telefone)
 										{
@@ -164,7 +161,7 @@ namespace Agenda
 									Console.WriteLine("---------------------------------------------------------------");
 									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento");
 									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone");
-									Console.WriteLine("5 - Adicionar um numero de telegone\n");
+									Console.WriteLine("5 - Adicionar um numero de telefone\n");
 									Console.WriteLine("---------------------------------------------------------------");
 									opcaoListaContatos = Int32.Parse( Console.ReadLine());
 

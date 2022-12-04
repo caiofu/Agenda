@@ -55,12 +55,29 @@ namespace Agenda
 			
 			while (!verificaTelefone || telefoneDigitado.ToString().Length < 9)
 			{
-				Console.WriteLine(telefoneDigitado);
+				Console.WriteLine(telefoneDigitado.ToString().Length);
 				Console.WriteLine("Você tem que digitar o telefone valido!");
 				verificaTelefone = Int64.TryParse(Console.ReadLine(), out telefoneDigitado);
 			}
 			this.telefone.Add(telefoneDigitado.ToString());
 
+		}
+
+		public static void MostraContatos(List<Contato> ListaContatos)
+		{
+			//ORDENANDO A LISTA PELO NOME
+			IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
+
+			//Sugestão criar um campo no json "quantidadeTelefone" para salvar quantos numeros tem
+			//para poder usar o foreach para percorrer.
+			foreach (var item in listaOrdenada)
+			{
+
+				Console.WriteLine("---------------------------------------------------------------");
+				Console.WriteLine("Contato N°: " + item.id + "\nNome: " + item.nome);
+				Console.WriteLine("---------------------------------------------------------------\n");
+
+			}
 		}
 
 	}
