@@ -45,7 +45,10 @@ namespace Agenda
 			}
 
 			this.dataNascimento = dataDigitada;
+			
 		}
+
+		
 
 		public void InsereTelefone()
 		{

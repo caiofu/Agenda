@@ -133,6 +133,8 @@ namespace Agenda
 									//MOSTRA DADOS
 									Console.Write("ID do contato para visualizar: ");
 									int idContato = Int32.Parse(Console.ReadLine());
+
+									//INSERIR UM LOOP PARA REPETIR SEMPRE QUE DIGITAR UMA OPÇAO INVALIDA?
 									if(idContato >=0 && idContato <= ListaContatos.Count)
 									{
 										Console.Clear() ;
@@ -157,7 +159,7 @@ namespace Agenda
 
 									}
 									//OPÇÕES
-									int opcaoVisualizaContato;
+									//int opcaoVisualizaContato;
 									Console.WriteLine("---------------------------------------------------------------");
 									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento");
 									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone");
@@ -173,10 +175,37 @@ namespace Agenda
 											Console.WriteLine("Nome atual: "+ ListaContatos[idContato].nome);
 											Console.WriteLine("Qual novo nome: ");
 											string novoNome = Console.ReadLine();
+											ListaContatos[idContato].nome = novoNome;
+											Console.WriteLine("Nome alterado para {0}", novoNome);
+											Console.WriteLine("###########################");
+											Console.WriteLine("Pressione ENTER para continuar");
+											Console.ReadLine();
+											Arquivo.CriaArquivo(ListaContatos);
 											//if(novoNome )
 											break;
 										//EDITAR DATA DE NASCIMENTO
 										case 2:
+											Console.WriteLine("Digite a nova data de nascimento:");
+
+											//VERIFICANDO SE DATA ESTA NO FORMATO CERTO
+											DateTime data = new DateTime();
+											string dataDigitada = Console.ReadLine();
+											bool verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+
+											while (!verificaDataDigitada)
+											{
+												Console.WriteLine("Formato invalido, digite uma data no formato dd/mm/yyyy:");
+												dataDigitada = Console.ReadLine();
+												verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+											}
+
+											//ALTERANDO
+											ListaContatos[idContato].dataNascimento = dataDigitada;
+											Arquivo.CriaArquivo(ListaContatos);
+											Console.WriteLine("Data de nascimento alterado para {0} com sucesso!", dataDigitada);
+											Console.WriteLine("###########################");
+											Console.WriteLine("Pressione ENTER para continuar");
+											Console.ReadLine();
 
 											break;
 										//EDITAR UM NUMERO		
@@ -196,7 +225,9 @@ namespace Agenda
 
 											break;
 										default:
-											Console.WriteLine("DIGITE UMA OPCAO VALIDA!");
+											Console.WriteLine("VOCE NAO DIGITOU  UMA OPCAO VALIDA!");
+											Console.WriteLine("###########################");
+											Console.WriteLine("Pressione ENTER para continuar");
 											break;
 
 									}
