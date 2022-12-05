@@ -54,13 +54,13 @@ namespace Agenda
 		{
 
 			Int64 telefoneDigitado;
-			bool verificaTelefone = Int64.TryParse(Console.ReadLine(), out telefoneDigitado);
+		
 			
-			while (!verificaTelefone || telefoneDigitado.ToString().Length < 9)
+			while (!Int64.TryParse(Console.ReadLine(), out telefoneDigitado) || telefoneDigitado.ToString().Length < 9)
 			{
-				Console.WriteLine(telefoneDigitado.ToString().Length);
+				
 				Console.WriteLine("Você tem que digitar o telefone valido!");
-				verificaTelefone = Int64.TryParse(Console.ReadLine(), out telefoneDigitado);
+				
 			}
 			this.telefone.Add(telefoneDigitado.ToString());
 
@@ -71,8 +71,7 @@ namespace Agenda
 			//ORDENANDO A LISTA PELO NOME
 			IEnumerable<Contato> listaOrdenada = ListaContatos.OrderBy(c => c.nome);
 
-			//Sugestão criar um campo no json "quantidadeTelefone" para salvar quantos numeros tem
-			//para poder usar o foreach para percorrer.
+			
 			foreach (var item in listaOrdenada)
 			{
 
@@ -80,6 +79,17 @@ namespace Agenda
 				Console.WriteLine("Contato N°: " + item.id + "\nNome: " + item.nome);
 				Console.WriteLine("---------------------------------------------------------------\n");
 
+			}
+		}
+
+		//EXIBI TELEFONE DE CONTATO ESPECIFICO
+		public static void MostraTelefonesContato(List<Contato> ListaContatos, int idContato)
+		{
+			int idTel = 1;
+			foreach (var telefones in ListaContatos[idContato].telefone)
+			{
+				Console.WriteLine(idTel + " -> " + telefones);
+				idTel++;
 			}
 		}
 

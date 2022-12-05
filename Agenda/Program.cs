@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Runtime.InteropServices.JavaScript;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Text.RegularExpressions;
 //ATENÇAO VERIFICAR MUDANÇA PARA INSERIR  TELEFONE
 //https://www.newtonsoft.com/json/help/html/ModifyJson.htm
 namespace Agenda
@@ -78,10 +79,10 @@ namespace Agenda
 				
 
 						//DATA DE NASCIMENTO <-----
-						Console.WriteLine("Deseja salvar a data de nacimento? 1 -Sim ");
-						int dtNascEscolha = int.Parse(Console.ReadLine());
+						Console.WriteLine("Deseja salvar a data de nacimento? 1 - Sim 2 - Não");
+						string dtNascEscolha = Console.ReadLine(); //Foi colocado como string para nao ter que fazer nenhum tipo de tratativa.
 
-						if(dtNascEscolha == 1)
+						if(dtNascEscolha == "1")
 						{
 							Console.WriteLine("Data de nascimento (Opcional) - DD/MM/YYYY : ");
 							string dataDigitada = Console.ReadLine();
@@ -202,6 +203,7 @@ namespace Agenda
 											//ALTERANDO
 											ListaContatos[idContato].dataNascimento = dataDigitada;
 											Arquivo.CriaArquivo(ListaContatos);
+
 											Console.WriteLine("Data de nascimento alterado para {0} com sucesso!", dataDigitada);
 											Console.WriteLine("###########################");
 											Console.WriteLine("Pressione ENTER para continuar");
@@ -210,15 +212,76 @@ namespace Agenda
 											break;
 										//EDITAR UM NUMERO		
 										case 3:
+											
+											Console.WriteLine("###########################");
+											int idTelEscolhido;
+
+											Contato.MostraTelefonesContato(ListaContatos, idContato);
+											
+											Console.WriteLine("###########################");
+											Console.Write("Qual numero deseja editar: ");
+											
+											
+										
+											//VERIFICA SE É UM NUMERO E SE É VALIDO
+											while (!int.TryParse(Console.ReadLine(), out idTelEscolhido) || idTelEscolhido < 0 || idTelEscolhido > ListaContatos[idContato].telefone.Count())
+											{
+												Console.WriteLine("Digita uma opção valida!");
+											}
+
+											
+											Console.WriteLine("Numero atual: "+ ListaContatos[idContato].telefone[idTelEscolhido-1].ToString());
+											Console.Write("Novo numero: ");
+									
+											Int64 telefoneDigitado;
+										
+
+											while (!Int64.TryParse(Console.ReadLine(), out telefoneDigitado) || telefoneDigitado.ToString().Length < 9)
+											{
+												Console.WriteLine(telefoneDigitado.ToString().Length);
+												Console.WriteLine("Você tem que digitar o telefone valido!");
+												
+											}
+											ListaContatos[idContato].telefone[idTelEscolhido-1] = telefoneDigitado.ToString();
+											Arquivo.CriaArquivo(ListaContatos);
+
+											Console.WriteLine("Telefone alterado para {0} com sucesso!", telefoneDigitado.ToString());
+											Console.WriteLine("###########################");
+											Console.WriteLine("Pressione ENTER para continuar");
+											Console.ReadLine();
+
 
 											break;
 										//EXCLUIR UM NUMERO DE TELEFONE	
 										case 4:
+											Contato.MostraTelefonesContato(ListaContatos, idContato);
 
+											Console.WriteLine("###########################");
+											Console.Write("Qual numero deseja editar: ");
+
+											int idTelEx;
+											//VERIFICA SE É UM NUMERO E SE É VALIDO
+											while (!int.TryParse(Console.ReadLine(), out idTelEx) || idTelEx < 0 || idTelEx > ListaContatos[idContato].telefone.Count())
+											{
+												Console.WriteLine("Digita uma opção valida!");
+											}
+
+											ListaContatos[idContato].telefone.Remove(ListaContatos[idContato].telefone[idTelEx-1]);
+											Arquivo.CriaArquivo(ListaContatos);
 											break;
 										//ADICIONAR UM NUMERO DE TELEFONE		
 										case 5:
+											Console.WriteLine("Digite o numero que deseja adicionar:");
 
+											Int64 novoTelefone;
+											while (!Int64.TryParse(Console.ReadLine(), out novoTelefone) || novoTelefone.ToString().Length < 9)
+											{
+
+												Console.WriteLine("Você tem que digitar o telefone valido!");
+
+											}
+											ListaContatos[idContato].telefone.Add(novoTelefone.ToString());
+											Arquivo.CriaArquivo(ListaContatos);
 											break;
 										//VOLTAR AO MENU PRINCIPAL	
 										case 6:
@@ -243,7 +306,7 @@ namespace Agenda
 										//Remove do arquivo
 										Arquivo.RemoveContato(idEscolhido);
 										//Remove da lista
-										ListaContatos.Remove(ListaContatos[0]);
+										ListaContatos.Remove(ListaContatos[idEscolhido]);
 										
 									}
 									else
