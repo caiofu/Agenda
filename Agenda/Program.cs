@@ -56,17 +56,23 @@ namespace Agenda
 	
 			
 
-
+			//MENU PRINCIPAL
 			while (menu)
 			{
-				Console.Clear();
+				
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
-				escolha = Int32.Parse(Console.ReadLine());
+				//escolha = Int32.Parse(Console.ReadLine());
+
+				while (!int.TryParse(Console.ReadLine(), out escolha))
+				{
+					Console.WriteLine("Digite apenas numeros!");
+				}
 
 				switch (escolha)
 				{
 					//ADICIONAR NOVO CONTATO
 					case 1:
+						Console.Clear();
 						Contato contatoAtual = new Contato();
 
 						Console.WriteLine("Nome do contato:");
@@ -164,12 +170,18 @@ namespace Agenda
 									Console.WriteLine("---------------------------------------------------------------");
 									Console.WriteLine("1 - Editar nome\n2 - Editar data de nascimento");
 									Console.WriteLine("3 - Editar um numero de telefone\n4 - Exluir um numero de telefone");
-									Console.WriteLine("5 - Adicionar um numero de telefone\n");
+									Console.WriteLine("5 - Adicionar um numero de telefone\n6 - Voltar ao menu principal");
 									Console.WriteLine("---------------------------------------------------------------");
-									opcaoListaContatos = Int32.Parse( Console.ReadLine());
+									
+
+									while (!int.TryParse(Console.ReadLine(), out opcaoListaContatos) || opcaoListaContatos <=0 || opcaoListaContatos > 6)
+									{
+										Console.WriteLine(opcaoListaContatos);
+										Console.WriteLine("Digite uma opção valida!");
+									}
 
 									//SWITCH PARA OPÇÕES DE EDIÇÃO
-									switch(opcaoListaContatos)
+									switch (opcaoListaContatos)
 									{
 										//EDITAR NOME
 										case 1:
@@ -288,13 +300,11 @@ namespace Agenda
 
 											break;
 										default:
-											Console.WriteLine("VOCE NAO DIGITOU  UMA OPCAO VALIDA!");
-											Console.WriteLine("###########################");
-											Console.WriteLine("Pressione ENTER para continuar");
+											
 											break;
 
 									}
-
+									Console.Clear();
 									break;
 								//REMOVER CONTATO
 								case 2:
