@@ -266,20 +266,34 @@ namespace Agenda
 											break;
 										//EXCLUIR UM NUMERO DE TELEFONE	
 										case 4:
-											Contato.MostraTelefonesContato(ListaContatos, idContato);
+
+											//VERIFICA SE PODE EXLUIR (SE TEM MAIS DE UM NUMERO DE TELEFONE
+											if (ListaContatos[idContato].telefone.Count() > 1) 
+											{
+												Contato.MostraTelefonesContato(ListaContatos, idContato);
 
 											Console.WriteLine("###########################");
-											Console.Write("Qual numero deseja excluir: ");
+											Console.Write("Qual numero deseja editar: ");
 
-											int idTelEx;
-											//VERIFICA SE É UM NUMERO E SE É VALIDO
-											while (!int.TryParse(Console.ReadLine(), out idTelEx) || idTelEx < 0 || idTelEx > ListaContatos[idContato].telefone.Count())
-											{
-												Console.WriteLine("Digita uma opção valida!");
+												int idTelEx;
+												//VERIFICA SE É UM NUMERO E SE É VALIDO
+												while (!int.TryParse(Console.ReadLine(), out idTelEx) || idTelEx < 0 || idTelEx > ListaContatos[idContato].telefone.Count())
+												{
+													Console.WriteLine("Digita uma opção valida!");
+												}
+
+												ListaContatos[idContato].telefone.Remove(ListaContatos[idContato].telefone[idTelEx - 1]);
+												Arquivo.CriaArquivo(ListaContatos);
 											}
-
-											ListaContatos[idContato].telefone.Remove(ListaContatos[idContato].telefone[idTelEx-1]);
-											Arquivo.CriaArquivo(ListaContatos);
+											else
+											{
+												Console.Clear();
+												Console.WriteLine("VOCÊ NÃO PODE EXCLUIR ESSE TELEFONE , PRICISA TER PELO MENOS UM NUMERO !");
+												Console.WriteLine("###########################");
+												Console.WriteLine("Pressione ENTER para continuar");
+												Console.ReadLine();
+											}
+											
 											break;
 										//ADICIONAR UM NUMERO DE TELEFONE		
 										case 5:
