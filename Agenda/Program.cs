@@ -273,11 +273,11 @@ namespace Agenda
 												Contato.MostraTelefonesContato(ListaContatos, idContato);
 
 											Console.WriteLine("###########################");
-											Console.Write("Qual numero deseja editar: ");
+											Console.Write("Qual numero deseja excluir: ");
 
 												int idTelEx;
 												//VERIFICA SE É UM NUMERO E SE É VALIDO
-												while (!int.TryParse(Console.ReadLine(), out idTelEx) || idTelEx < 0 || idTelEx > ListaContatos[idContato].telefone.Count())
+												while (!int.TryParse(Console.ReadLine(), out idTelEx) || idTelEx <= 0 || idTelEx > ListaContatos[idContato].telefone.Count())
 												{
 													Console.WriteLine("Digita uma opção valida!");
 												}
