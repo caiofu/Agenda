@@ -54,7 +54,7 @@ namespace Agenda
 					idJson++;
 				}
 
-				Arquivo.CriaArquivo(ListaContatos);
+				//Arquivo.CriaArquivo(ListaContatos);
 			}
 			
 	

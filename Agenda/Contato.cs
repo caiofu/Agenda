@@ -35,13 +35,13 @@ namespace Agenda
 			//VERIFICA SE DATA ESTA NO FORMATO CORRETO
 			DateTime data = new DateTime();
 			
-			bool verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+			//bool verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
 
-			while (!verificaDataDigitada)
+			while (!DateTime.TryParse(dataDigitada, out data))
 			{
 				Console.WriteLine("Formato invalido, digite uma data no formato dd/mm/yyyy:");
 				dataDigitada = Console.ReadLine();
-				verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
+				//verificaDataDigitada = DateTime.TryParse(dataDigitada, out data);
 			}
 
 			this.dataNascimento = dataDigitada;
