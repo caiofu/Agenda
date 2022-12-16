@@ -6,11 +6,15 @@ using System.Runtime.InteropServices.JavaScript;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Text.RegularExpressions;
-//ATENÇAO VERIFICAR MUDANÇA PARA INSERIR  TELEFONE
-//https://www.newtonsoft.com/json/help/html/ModifyJson.htm
+/*
+ * GRUPO
+ * CAIO EDUARDO FUREGATI DE MATOS
+ * VICTOR AIELLO
+ * VICTOR BUQUERA
+*/
 namespace Agenda
 {
-	internal class Program
+	public class Program
 	{
 		static void Main(string[] args)
 		{
@@ -61,11 +65,16 @@ namespace Agenda
 			{
 				
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
-				//escolha = Int32.Parse(Console.ReadLine());
+				
 
-				while (!int.TryParse(Console.ReadLine(), out escolha))
+				while (!int.TryParse(Console.ReadLine(), out escolha) || escolha < 1 || escolha > 2)
 				{
-					Console.WriteLine("Digite apenas numeros!");
+					Console.Clear();
+					Console.WriteLine("###########################");
+					Console.WriteLine("Digite uma opção valida!");
+					Console.WriteLine("###########################\n");
+					Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
+					
 				}
 
 				switch (escolha)
@@ -86,9 +95,14 @@ namespace Agenda
 
 						//DATA DE NASCIMENTO <-----
 						Console.WriteLine("Deseja salvar a data de nacimento? 1 - Sim 2 - Não");
-						string dtNascEscolha = Console.ReadLine(); //Foi colocado como string para nao ter que fazer nenhum tipo de tratativa.
+						int dtNascEscolha;
 
-						if(dtNascEscolha == "1")
+						while(!int.TryParse(Console.ReadLine(), out dtNascEscolha) || dtNascEscolha < 1 || dtNascEscolha > 2 )
+						{
+							Console.WriteLine("Escolha uma opção valida numero 1 ou 2");
+						}
+
+						if(dtNascEscolha == 1)
 						{
 							Console.WriteLine("Data de nascimento (Opcional) - DD/MM/YYYY : ");
 							string dataDigitada = Console.ReadLine();
@@ -132,18 +146,28 @@ namespace Agenda
 							Console.WriteLine("###########################");
 							Console.Write(":");
 
-							opcaoListaContatos = Int32.Parse(Console.ReadLine());
+							//VALIDANDO SE É UMA OPÇÃO VALIDA
+							while(!int.TryParse(Console.ReadLine(),out opcaoListaContatos) || opcaoListaContatos < 1 || opcaoListaContatos > 3)
+							{
+								Console.WriteLine("Escolha uma opcao valida: 1, 2 ou 3");
+							}
+							
 							switch (opcaoListaContatos)
 							{
 								//VISUALIZAR CONTATO
 								case 1:
 									//MOSTRA DADOS
 									Console.Write("ID do contato para visualizar: ");
-									int idContato = Int32.Parse(Console.ReadLine());
 
-									//INSERIR UM LOOP PARA REPETIR SEMPRE QUE DIGITAR UMA OPÇAO INVALIDA?
-									if(idContato >=0 && idContato <= ListaContatos.Count)
+
+									int idContato;
+								
+									while(!int.TryParse(Console.ReadLine(), out idContato) || idContato < 0 || idContato > ListaContatos.Count-1)
 									{
+										Console.WriteLine("Digite um id valido de 0 a {0}", ListaContatos.Count - 1);
+									}
+
+									
 										Console.Clear() ;
 										Console.WriteLine("###########################");
 										Console.WriteLine("Nome: "+ListaContatos[idContato].nome);
@@ -164,7 +188,6 @@ namespace Agenda
 										}
 										Console.WriteLine("###########################");
 
-									}
 									//OPÇÕES
 									//int opcaoVisualizaContato;
 									Console.WriteLine("---------------------------------------------------------------");
@@ -194,7 +217,7 @@ namespace Agenda
 											Console.WriteLine("Pressione ENTER para continuar");
 											Console.ReadLine();
 											Arquivo.CriaArquivo(ListaContatos);
-											//if(novoNome )
+											
 											break;
 										//EDITAR DATA DE NASCIMENTO
 										case 2:
@@ -324,21 +347,18 @@ namespace Agenda
 								case 2:
 									Console.WriteLine("Digite o id para remover\n");
 									//VERIFICA SE ID EXISTE E REMOVE
-									int idEscolhido = Int32.Parse(Console.ReadLine());
-									if (idEscolhido >= 0 && idEscolhido <= ListaContatos.Count-1)
+									int idEscolhido;
+
+									while(!int.TryParse(Console.ReadLine(), out idEscolhido) || idEscolhido < 0 || idEscolhido > ListaContatos.Count -1)
 									{
+										Console.WriteLine("Digite um  id valido entre 0 e {0}", ListaContatos.Count -1);
+									}
+
 										//Remove do arquivo
 										Arquivo.RemoveContato(idEscolhido);
 										//Remove da lista
 										ListaContatos.Remove(ListaContatos[idEscolhido]);
-										
-									}
-									else
-									{
-										Console.WriteLine("ID ESCOLHIDO NAO EXISTE!");
-										Console.Read(); //USANDO SÓ PARA NAO LIMPAR A TELA ENQUANTO USUARIO NAO DIGITAR ALGO
-									}
-
+							
 
 									break;
 								default:
@@ -354,10 +374,7 @@ namespace Agenda
 						break;
 
 						default: 
-						Console.Clear();
-						Console.WriteLine("###########################");
-						Console.WriteLine("Digite uma opção valida!");
-						Console.WriteLine("###########################\n");
+						
 						break;
 
 
