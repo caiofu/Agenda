@@ -67,7 +67,7 @@ namespace Agenda
 				Console.WriteLine("1- Adicionar novo contato  \n2- Listar contatos\n3- Encerrar");
 				
 
-				while (!int.TryParse(Console.ReadLine(), out escolha) || escolha < 1 || escolha > 2)
+				while (!int.TryParse(Console.ReadLine(), out escolha) || escolha < 1 || escolha > 3)
 				{
 					Console.Clear();
 					Console.WriteLine("###########################");
@@ -360,6 +360,9 @@ namespace Agenda
 										ListaContatos.Remove(ListaContatos[idEscolhido]);
 							
 
+									break;
+									case 3:
+										Console.Clear();
 									break;
 								default:
 									break;
